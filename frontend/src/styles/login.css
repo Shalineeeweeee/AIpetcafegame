@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+.login-page {
+  background-image: url("/public/assets/your-pixel-art-image.gif");
+  height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Fredoka One', cursive;
+}
+
+.login-container {
+  text-align: center;
+}
+
+.game-title {
+  font-size: 50px;
+  text-shadow: 3px 3px 5px rgb(255, 164, 220);
+}
+
+.golden {
+  color: plum;
+  text-shadow: 2px 2px 5px #8b1379;
+}
+
+.farm {
+  color: rgb(254, 167, 255);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.login-box {
+  background:transparent;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgb(255, 124, 124);
+  width: 1000px;
+  height: 1000px;
+  margin-top: 10px;
+  backdrop-filter: blur(10px);
+}
+
+h2 {
+  color: rgb(255, 141, 160);
+  text-shadow: 2px 2px 5px rgb(255, 132, 132);
+  padding-top: 120px;
+  font-size: 100px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background: pink;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.input-group .icon {
+  margin-right: 10px;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 50px;
+  flex: 1;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  background: pink;
+  border: none;
+  color: white;
+  font-size: 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background: rgb(255, 100, 126);
+}
+
+.register-link {
+  margin-top: 10px;
+  color: white;
+}
+
+.register-link a {
+  color: #eb6cff;
+  text-decoration: none;
+}
