@@ -1,28 +1,41 @@
-import React from "react";
-import "./Login.css";
+import React, { useState } from "react";
+import "./Login.css"; // Make sure to create and style this file
 
-function Login() {
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log("Logging in with", username, password);
+    // Handle authentication logic here
+  };
+
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <h1 className="game-title">
-          <span className="golden">WELCOME TO</span> <span className="farm">CAFE</span>
-        </h1>
-        <div className="login-box">
-          <h2>Sign In</h2>
-          <div className="input-group">
-            <input type="text" placeholder="Username" />
-          </div>
-          <div className="input-group">
-            <input type="password" placeholder="Password" />
-          </div>
-          <button className="login-btn">Enter</button>
-          <p className="social-signin">or Sign In with</p>
-          <p className="register-link">Don't have an account? <a>Register</a></p>
-        </div>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Welcome to Cozy Café</h2>
+        <form onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="/register">Register</a></p>
       </div>
     </div>
   );
-}
+};
 
 export default Login;
