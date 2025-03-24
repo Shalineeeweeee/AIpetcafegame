@@ -1,11 +1,21 @@
-import React from "react";
+import React from 'react';
 
-function CoinSystem({ coins }) {
+export const CoinSystem = ({ coins, onCoinsUpdate }) => {
+  const earnCoins = (amount) => {
+    onCoinsUpdate(coins + amount);
+  };
+
+  const spendCoins = (amount) => {
+    if (coins >= amount) {
+      onCoinsUpdate(coins - amount);
+      return true;
+    }
+    return false;
+  };
+
   return (
-    <div className="coin-container">
-      <p> Coins: {coins}</p>
+    <div className="coin-system">
+      <h3>Coins: {coins}</h3>
     </div>
   );
-}
-
-export default CoinSystem;
+};

@@ -1,18 +1,17 @@
-import React, { useEffect } from "react";
+import React from 'react';
 
-function Tasks({ tasksCompleted, setTasksCompleted, setLevel }) {
-  useEffect(() => {
-    if (tasksCompleted >= 3) {
-      setLevel((prev) => prev + 1);
-      setTasksCompleted(0); // Reset after level up
-    }
-  }, [tasksCompleted]);
-
+export const TasksSystem = ({ tasks, onTaskComplete }) => {
   return (
-    <div className="tasks-container">
-      <p> Tasks Completed: {tasksCompleted}/3</p>
+    <div className="tasks-system">
+      <h3>Tasks</h3>
+      {tasks.map(task => (
+        <div key={task.id} className={`task ${task.completed ? 'completed' : ''}`}>
+          {task.description}
+          {!task.completed && (
+            <button onClick={() => onTaskComplete(task.id)}>Complete</button>
+          )}
+        </div>
+      ))}
     </div>
   );
-}
-
-export default Tasks;
+};

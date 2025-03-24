@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
 
-function Orders({ onComplete }) {
-  const [orders, setOrders] = useState([]);
+export const OrdersSystem = ({ activeOrders, onOrderUpdate }) => {
+  const generateNewOrder = () => {
+    const newOrder = {
+      id: Date.now(),
+      items: ['Pizza', 'Salad'],
+      reward: 50,
+      timeLimit: 120 // seconds
+    };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newOrder = {
-        id: Date.now(),
-        item: ["Coffee", "Cake", "Sandwich"][Math.floor(Math.random() * 3)],
-        timeLeft: 10, // 10s per order
-      };
-      setOrders((prev) => [...prev, newOrder]);
-    }, 5000); // New order every 5s
+    onOrderUpdate([...activeOrders, newOrder]);
+  };
 
-    return () => clearInterval(interval);
-  }, []);
+  const completeOrder = (orderId) => {
+    const completedOrder = activeOrders.find(order => order.id === orderId);
+    
+    // Remove order and potentially add rewards
+    onOrderUpdate(activeOrders.filter(order => order.id !== orderId));
+  };
 
   return (
-    <div className="orders-container">
-      {orders.map((order) => (
+    <div className="orders-system">
+      <h3>Active Orders</h3>
+      {activeOrders.map(order => (
         <div key={order.id} className="order">
-          <p>{order.item}</p>
-          <p>⏳ {order.timeLeft}s</p>
-          <button onClick={() => onComplete(order.item)}>Serve</button>
+          <p>Order: {order.items.join(', ')}</p>
+          <p>Reward: {order.reward} coins</p>
+          <button onClick={() => completeOrder(order.id)}>Complete Order</button>
         </div>
       ))}
+      <button onClick={generateNewOrder}>Generate New Order</button>
     </div>
   );
-}
-
-export default Orders;
+};

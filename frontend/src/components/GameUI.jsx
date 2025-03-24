@@ -1,71 +1,118 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Coins, Clock, ChefHat } from "lucide-react";
-import "./styles.css"; // Ensure to have a pixel-art style CSS file
+import React, { useState, useEffect } from 'react';
+import { CoinSystem } from './CoinSystem';
+import { LevelSystem } from './LevelSystem';
+import { TasksSystem } from './TasksSystem';
+import { TimerSystem } from './TimerSystem';
+import { KitchenSystem } from './KitchenSystem';
+import { OrdersSystem } from './OrdersSystem';
 
-export default function GameScreen() {
-  const [coins, setCoins] = useState(100);
-  const [level, setLevel] = useState(1);
-  const [progress, setProgress] = useState(33);
-  const [orders, setOrders] = useState([
-    { id: 1, item: "Latte", time: 30 },
-    { id: 2, item: "Croissant", time: 45 },
-  ]);
+const GameUI = () => {
+  const [gameState, setGameState] = useState({
+    coins: 0,
+    level: 1,
+    experience: 0,
+    tasks: [],
+    activeOrders: [],
+    kitchenInventory: [],
+    gameTime: 0
+  });
+
+  const [isGameActive, setIsGameActive] = useState(false);
 
   useEffect(() => {
-    if (progress >= 100) {
-      setLevel(level + 1);
-      setProgress(0);
+    let gameLoop;
+    if (isGameActive) {
+      gameLoop = setInterval(() => {
+        // Game loop logic
+        updateGameState();
+      }, 1000); // Update every second
     }
-  }, [progress, level]);
+    return () => clearInterval(gameLoop);
+  }, [isGameActive]);
+
+  const updateGameState = () => {
+    setGameState(prevState => ({
+      ...prevState,
+      gameTime: prevState.gameTime + 1,
+      // Additional game state updates
+    }));
+  };
+
+  const startGame = () => {
+    setIsGameActive(true);
+    initializeGameState();
+  };
+
+  const initializeGameState = () => {
+    setGameState({
+      coins: 100,
+      level: 1,
+      experience: 0,
+      tasks: generateInitialTasks(),
+      activeOrders: [],
+      kitchenInventory: [],
+      gameTime: 0
+    });
+  };
+
+  const generateInitialTasks = () => {
+    return [
+      { id: 1, description: 'Complete first kitchen order', completed: false },
+      { id: 2, description: 'Earn 500 coins', completed: false }
+    ];
+  };
+
+  const handleTaskCompletion = (taskId) => {
+    setGameState(prevState => ({
+      ...prevState,
+      tasks: prevState.tasks.map(task => 
+        task.id === taskId ? { ...task, completed: true } : task
+      ),
+      experience: prevState.experience + 10
+    }));
+  };
 
   return (
-    <div className="game-container pixel-art bg-cafe-night">
-      {/* Top Bar */}
-      <div className="top-bar">
-        <div className="info-box">
-          <Coins className="icon" />
-          <span>{coins}</span>
+    <div className="game-container">
+      {!isGameActive ? (
+        <div className="start-screen">
+          <h1>Alpet Game</h1>
+          <button onClick={startGame}>Start Game</button>
         </div>
-        <div className="info-box">
-          <ChefHat className="icon" />
-          <span>Level {level}</span>
-        </div>
-        <div className="info-box">
-          <Clock className="icon" />
-          <span>Time Left: 60s</span>
-        </div>
-      </div>
-
-      {/* Orders Section */}
-      <div className="orders-panel">
-        {orders.map((order) => (
-          <div key={order.id} className="order-box">
-            <span>{order.item}</span>
-            <span className="order-time">{order.time}s</span>
+      ) : (
+        <div className="game-interface">
+          <div className="game-header">
+            <CoinSystem 
+              coins={gameState.coins} 
+              onCoinsUpdate={(newCoins) => setGameState(prev => ({...prev, coins: newCoins}))}
+            />
+            <LevelSystem 
+              level={gameState.level} 
+              experience={gameState.experience}
+            />
           </div>
-        ))}
-      </div>
-
-      {/* Cooking & Serving Station */}
-      <div className="cooking-station">
-        <div className="ingredients">
-          <motion.div whileHover={{ scale: 1.1 }} className="ingredient">☕</motion.div>
-          <motion.div whileHover={{ scale: 1.1 }} className="ingredient">🥐</motion.div>
-          <motion.div whileHover={{ scale: 1.1 }} className="ingredient">🍰</motion.div>
+          
+          <div className="game-main">
+            <KitchenSystem 
+              inventory={gameState.kitchenInventory}
+              onInventoryUpdate={(newInventory) => setGameState(prev => ({...prev, kitchenInventory: newInventory}))}
+            />
+            <OrdersSystem 
+              activeOrders={gameState.activeOrders}
+              onOrderUpdate={(newOrders) => setGameState(prev => ({...prev, activeOrders: newOrders}))}
+            />
+            <TasksSystem 
+              tasks={gameState.tasks}
+              onTaskComplete={handleTaskCompletion}
+            />
+            <TimerSystem 
+              gameTime={gameState.gameTime}
+            />
+          </div>
         </div>
-        <div className="cooking-area">
-          <motion.div whileTap={{ scale: 0.9 }} className="cooking-slot">🔥</motion.div>
-          <motion.div whileTap={{ scale: 0.9 }} className="cooking-slot">🔥</motion.div>
-        </div>
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="serve-btn"
-        >
-          Serve Order
-        </motion.button>
-      </div>
+      )}
     </div>
   );
-}
+};
+
+export default GameUI;
