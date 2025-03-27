@@ -1,10 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import Navbar from '../components/Navbar';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+function Dashboard() {
+  return (
+    <div className="dashboard">
+      <Navbar />
+      <div className="dashboard-content">
+        <h1>Dashboard</h1>
+        <p>Welcome to your AI Pet Game Dashboard!</p>
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;
